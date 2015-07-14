@@ -296,6 +296,7 @@ Ext.define('MyApp.controller.MainController',{
 
 						var ok = true;
 						var mess = "";
+						var info_mess = ""
 						for (i=0;i<upd.length;i++)
 						{
 							if (isNaN(upd[i].currentValue))
@@ -311,7 +312,7 @@ Ext.define('MyApp.controller.MainController',{
 									if (upd[i].currentValue < upd[i].lastValue)
 									{
 										ok = false;
-										mess = "Новое показание не может быть меньше предыдущего";
+										mess = "Новое показание не может быть меньше предыдущего, либо укажите '0' еслы Вы не хотите передавть данные показания";
 									}else{
 
 										if (upd[i].service == 'Электроэнергия')
@@ -322,14 +323,33 @@ Ext.define('MyApp.controller.MainController',{
 												mess = "Показания по счетчику «Электроэнергия» должны быть целым числом.";
 											}
 										}
+
+										if (upd[i].service == 'Холодная вода')
+										{
+											if ((upd[i].currentValue - upd[i].lastValue) > 5.01)
+											{
+												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Холодная вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, сверьте с предыдущими показаниями.<br /><br />";
+											}
+										}
+										if (upd[i].service == 'Горячая вода')
+										{
+											if ((upd[i].currentValue - upd[i].lastValue) > 3.37)
+											{
+												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Горячая вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, сверьте с предыдущими показаниями.<br /><br />";
+											}
+										}
+
+
 									}
 
+
 						}
+
 
 						if (ok)
 						{
 							var parent = this;
-							Ext.MessageBox.confirm('Сохранить','Вы действительно хотите сохранить новые показания?',function(r){
+							Ext.MessageBox.confirm('Сохранить',info_mess+'Вы действительно хотите сохранить новые показания?',function(r){
 								if (r=='yes')
 								{
 									wind.setLoading(true);
