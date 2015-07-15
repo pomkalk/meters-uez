@@ -277,7 +277,6 @@ Ext.define('MyApp.controller.MainController',{
 			{
 				click: function(button)
 				{
-					console.log('asd');
 					var wind = button.up('window');
 					var f = Ext.getCmp('metersGrid');
 					
@@ -324,18 +323,34 @@ Ext.define('MyApp.controller.MainController',{
 											}
 										}
 
+//Раздел проверки по нормативу и датам
+
+										ld = new Date(upd[i].lastValueDate);
+										cd = new Date();
+										mp = (cd.getYear()*12+cd.getMonth()) - (ld.getYear()*12+ld.getMonth());
+										if (mp<=0) 
+										{
+											mp = 1;
+										}
+//Блок указания нормативов для проверки
+										cold_mp = 5.01*mp;
+										warm_mp = 3.37*mp;
+//
+										console.log('Холодная норматив:'+cold_mp+' за '+mp);
+										console.log('Горячая норматив:'+warm_mp+' за '+mp);
+
 										if (upd[i].service == 'Холодная вода')
 										{
-											if ((upd[i].currentValue - upd[i].lastValue) > 5.01)
+											if ((upd[i].currentValue - upd[i].lastValue) > cold_mp)
 											{
-												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Холодная вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, сверьте с предыдущими показаниями.<br /><br />";
+												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Холодная вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, пожалуйста сверьте с предыдущими показаниями.<br /><br />";
 											}
 										}
 										if (upd[i].service == 'Горячая вода')
 										{
-											if ((upd[i].currentValue - upd[i].lastValue) > 3.37)
+											if ((upd[i].currentValue - upd[i].lastValue) > warm_mp)
 											{
-												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Горячая вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, сверьте с предыдущими показаниями.<br /><br />";
+												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Горячая вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, пожалуйста сверьте с предыдущими показаниями.<br /><br />";
 											}
 										}
 
