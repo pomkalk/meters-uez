@@ -3,6 +3,17 @@ Ext.define('MyApp.view.MainPanel',{
 	title: 'Ввод показаний индивидуальных приборов учета ООО "УЕЗ ЖКУ г. Ленинска-Кузнецкого"',
 	id: 'mainPanelId',
 	xtype: 'main-panel',
+	tbar:[
+		{
+			xtype:'button',
+			text:'Вернуться на сайт',
+			id: 'goBackButton',
+			handler: function(){
+				window.location = 'http://uez-lk.ru'
+			}
+
+		}
+	],
 	layout:
 	{
 		type:'hbox',
