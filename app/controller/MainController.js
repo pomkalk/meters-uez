@@ -335,9 +335,11 @@ Ext.define('MyApp.controller.MainController',{
 //Блок указания нормативов для проверки
 										cold_mp = 5.01*mp;
 										warm_mp = 3.37*mp;
+										electro_mp = 1000*mp;
 //
 										console.log('Холодная норматив:'+cold_mp+' за '+mp);
 										console.log('Горячая норматив:'+warm_mp+' за '+mp);
+										console.log('Электроэнергия норматив:'+electro_mp+' за '+mp);
 
 										if (upd[i].service == 'Холодная вода')
 										{
@@ -351,6 +353,14 @@ Ext.define('MyApp.controller.MainController',{
 											if ((upd[i].currentValue - upd[i].lastValue) > warm_mp)
 											{
 												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Горячая вода», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кубов, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, пожалуйста сверьте с предыдущими показаниями.<br /><br />";
+											}
+										}
+
+										if (upd[i].service == 'Электроэнергия')
+										{
+											if ((upd[i].currentValue - upd[i].lastValue) > warm_mp)
+											{
+												info_mess += "Пожалуйста проверьте введенные показания по счетчику «Электроэнергия», так как введенные Вами показания составляют "+(upd[i].currentValue - upd[i].lastValue)+" кВт/ч, что может являться ошибкой. Возможно вы не поставили знак отделения десятичной части, пожалуйста сверьте с предыдущими показаниями.<br /><br />";
 											}
 										}
 
