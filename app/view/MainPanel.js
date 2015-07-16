@@ -11,8 +11,12 @@ Ext.define('MyApp.view.MainPanel',{
 			handler: function(){
 				window.location = 'http://uez-lk.ru'
 			}
-
-		}
+		}/*,
+		{
+			xtype:'button',
+			text: 'Новости',
+			id: 'newsButton'
+		}*/
 	],
 	layout:
 	{

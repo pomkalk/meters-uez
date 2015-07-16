@@ -11,6 +11,12 @@ Ext.define('MyApp.view.MetersList',{
 	buttons:[
 		{
 			xtype:'button',
+			text: 'Отзывы и пожелания',
+			id: 'openFeedbackWindow'
+		},
+		'->',
+		{
+			xtype:'button',
 			id: 'saveMetersList',
 			text: 'Сохранить'
 		},{

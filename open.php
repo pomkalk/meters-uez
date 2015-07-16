@@ -57,6 +57,7 @@ while ($row = $resp->fetch_assoc())
 $js = array(
 		"success"=> true,
 		"address"=>$windowHeader,
+		"ls"=>$lsInfo['ls'],
 		"data"=> $data
 	);
 echo json_encode($js);

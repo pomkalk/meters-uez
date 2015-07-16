@@ -8,6 +8,10 @@ Ext.define('MyApp.controller.MainController',{
 	routes: {
 		'stat' : function(){
 			var stat = Ext.create('MyApp.view.Stat');
+		},
+		'feedback': function()
+		{
+			var feedback = Ext.create('MyApp.view.Feedback');
 		}
 	},
 
@@ -249,6 +253,14 @@ Ext.define('MyApp.controller.MainController',{
 					
 				}
 			},
+			'#feedbackCloseButton':
+			{
+				click: function(button)
+				{
+					button.up('window').close();
+					
+				}
+			},
 			'#metersListHelp':
 			{
 				click: function()
@@ -399,9 +411,95 @@ Ext.define('MyApp.controller.MainController',{
 						});
 					}
 				}
-			}
+			},
+			'#openFeedbackWindow':{
+				click: function(button)
+				{
+					main_wind = button.up('window');
+					console.log(main_wind.title);
+					console.log(main_wind.ls);
+					fb_form = Ext.create('MyApp.view.FeedbackForm',{
+						tbar:['<b>Отправитель отзыва:</b> <i>'+main_wind.title+'</i>'],
+						ls: main_wind.ls
+					});
+					fb_form.show()
+				}
+			},
+			'#sendFeedback':{
+				click:function(button)
+				{
+					fb_wind = button.up('window');
+					Ext.Ajax.request({
+						url:'savefeedback.php',
+						method: 'POST',
+						params:{ ls: fb_wind.ls, feedback: Ext.getCmp('feedbackEditor').getValue()},
+						success:function(resp_data)
+						{
+							resp = Ext.decode(resp_data.responseText, true);
+							if (resp == null)
+							{
+									Ext.MessageBox.show({
+										title: 'Внимание',
+										msg: 'Ошибка при сохранении отзыва!',
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.ERROR
+									});
+							}
+							else {
+								if (resp.success)
+								{
+									Ext.MessageBox.show({
+										title: 'Отзыв',
+										msg: 'Отзыв успешно сохранен.',
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.INFO
+									});
+									fb_wind.close();
+								}else{
+									Ext.MessageBox.show({
+										title: 'Внимание',
+										msg: resp.message,
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.WARNING
+									});
+								}	
+							}
+						},
+						failure: function(resp_data,opts)
+						{
+							Ext.MessageBox.show({
+								title: 'Ошибка',
+								msg: 'Произошла ошибка при сохранении данных, попробуйте еще раз.',
+								buttons: Ext.MessageBox.OK,
+								icon: Ext.MessageBox.ERROR
+							});
+							fb_wind.close();
+						}
+					});
+				}
+			},
+			'#feedbackId': {
+				itemdblclick: function(grid, record)
+				{
+					fb_form = Ext.create('MyApp.view.FeedbackForm',{
+						title: 'Отзыв',
+						tbar:['<b>Отзыв от:</b> <i>'+record.get('address')+'</i> от '+record.get('date').toLocaleDateString()+' г.'],
+					});
+					Ext.getCmp('feedbackEditor').setValue(record.get('feedback'));
+					Ext.getCmp('sendFeedback').destroy();
+					fb_form.show()
+				}
+			}/*,
+			'#newsButton':{
+				click: function()
+				{
+					news = Ext.create('MyApp.view.NewsForm');
+					news.show()
+				}
+			}*/
 		});
 	},
+
 	typeOf: function(input)
 	{
     var m = (/[\d]+(\.[\d]+)?/).exec(input);
@@ -480,7 +578,7 @@ Ext.define('MyApp.controller.MainController',{
 						var mstore = Ext.create('MyApp.store.MetersStore');
 						mstore.loadData(js.data);
 
-						var win = Ext.create('MyApp.view.MetersList',{title: js.address});
+						var win = Ext.create('MyApp.view.MetersList',{title: js.address,ls:js.ls});
 
 						var grid = Ext.getCmp('metersGrid');
 						grid.bindStore(mstore);
