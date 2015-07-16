@@ -36,7 +36,7 @@ Ext.define('MyApp.view.MetersList',{
 				{header: 'Тип счетчика', dataIndex: 'service', flex: 3},
 				{header: 'Дата последних показаний', dataIndex: 'lastValueDate', flex: 3, xtype: 'datecolumn', format:'d.m.Y'},
 				{header: 'Последние показания', dataIndex: 'lastValue', flex: 2},
-				{header: 'Новые показания', vtype: 'int', dataIndex: 'currentValue', flex:2, editor: 'textfield'}
+				{header: 'Новые показания', vtype: 'int', dataIndex: 'currentValue', flex:2, editor: 'textfield', renderer: function(val){return ((val==0)?'':val);}}
 			],
 			plugins:[
 				Ext.create('Ext.grid.plugin.CellEditing',{
