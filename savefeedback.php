@@ -19,6 +19,8 @@ $ls = $_POST['ls'];
 $feedback = htmlspecialchars(trim($_POST['feedback']));
 $fdate = date('Y-m-d');
 
+if (strlen($feedback) <= 0) die('{success:false, message:"Отзыв не может быть пустым."}');
+
 $resp = $con->query("SELECT * FROM feedback WHERE ls=$ls AND feedbackDate='$fdate'");
 if ($resp->num_rows > 0) die('{success:false, message:"К сожалению, по данному адресу сегодня уже оставляли отзыв, попробуйте сделать это завтра. "}');
 
