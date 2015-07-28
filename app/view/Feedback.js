@@ -1,6 +1,6 @@
 Ext.define('MyApp.view.Feedback',{
 	extend: 'Ext.window.Window',
-		autoShow: true,
+	autoShow: true,
 	title: 'Просмотр отзывов',
 	width: 800,
 	height: 600,

@@ -28,4 +28,7 @@ if ($resp->num_rows > 0) die('{success:false, message:"К сожалению, п
 $resp = $con->query("INSERT INTO feedback (ls,feedbackDate, feedbackText) VALUES ($ls,'$fdate','$feedback')");
 echo '{success:true, message:""}';
 
+
+echo $con->error;
+
 ?>
